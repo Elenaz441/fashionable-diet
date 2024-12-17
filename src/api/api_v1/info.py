@@ -30,7 +30,7 @@ async def calc_info(user_info: InfoRequest, db: AsyncSession = Depends(get_async
         food_model = result.scalar()
         user_calorie += food_model.kilocalories * food.quantity / 100
 
-    category_name, category_description = get_category(
+    category_name, category_description, category_url = get_category(
         height=user_info.height,
         weight=user_info.weight,
         age=user_info.age,
@@ -39,5 +39,6 @@ async def calc_info(user_info: InfoRequest, db: AsyncSession = Depends(get_async
     return InfoResponse(
         category_name=category_name,
         category_description=category_description,
+        category_url=category_url,
         calorie_standard=calorie_standard,
         user_calorie=user_calorie)

@@ -38,6 +38,13 @@ class FrontendConfig(BaseModel):
     url: str
 
 
+class PhotoUrl(BaseModel):
+    skuf: str
+    masik: str
+    tubik: str
+    schtrih: str
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
@@ -48,6 +55,7 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
     front: FrontendConfig
+    photo: PhotoUrl
 
 
 settings = Settings()

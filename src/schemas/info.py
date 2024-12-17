@@ -34,5 +34,6 @@ class InfoRequest(PyBaseModel):
 class InfoResponse(PyBaseModel):
     category_name: str
     category_description: str
+    category_url: str
     calorie_standard: float
     user_calorie: float
