@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from models import Food
 from schemas import InfoResponse, InfoRequest
 from database import get_async_session
@@ -10,7 +10,7 @@ from utils import (
     get_category
 )
 
-router = APIRouter(tags=["Room"])
+router = APIRouter(tags=["Info"])
 
 
 @router.post("/", status_code=status.HTTP_200_OK, response_model=InfoResponse)
@@ -28,6 +28,11 @@ async def calc_info(user_info: InfoRequest, db: AsyncSession = Depends(get_async
         stmt = select(Food).where(Food.name == food.name)
         result = await db.execute(stmt)
         food_model = result.scalar()
+        if not food_model:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Food {food.name} not found"
+            )
         user_calorie += food_model.kilocalories * food.quantity / 100
 
     category_name, category_description, category_url = get_category(
